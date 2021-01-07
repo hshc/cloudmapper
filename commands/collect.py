@@ -226,11 +226,14 @@ def collect(arguments):
             regions_filter.append(default_region)
 
     session_data = {"region_name": default_region}
+    session_data2 = {}
 
     if arguments.profile_name:
         session_data["profile_name"] = arguments.profile_name
+        session_data2["profile_name"] = arguments.profile_name
 
     session = boto3.Session(**session_data)
+    session2 = boto3.Session(**session_data2)
 
     sts = session.client("sts")
     try:
@@ -274,7 +277,8 @@ def collect(arguments):
         exit(-1)
 
     print("* Getting region names", flush=True)
-    ec2 = session.client("ec2")
+    # ec2 = session.client("ec2")
+    ec2 = session2.client("ec2")
     region_list = ec2.describe_regions()
 
     if regions_filter is not None:
